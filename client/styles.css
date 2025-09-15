@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: black;
+}
+
+body,
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+#container {
+    height: 100vh;
+    width: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+
+     /* Ẩn thanh scroll */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE, Edge */
+}
+
+#container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.video-page {
+    height: 100vh;
+    width: 100%;
+    scroll-snap-align: start;
+    background: black;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    overflow-y: hidden;
+}
+
+video {
+    width: 100%;
+    transform: translateY(-3%);
+}

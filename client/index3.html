@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Stream App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      background: #121212;
+      color: white;
+    }
+    #sidebar {
+      width: 280px;
+      background: #1f1f1f;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+    }
+    #searchContainer {
+      display: flex;
+      margin-bottom: 10px;
+    }
+    #searchBox {
+      flex: 1;
+      padding: 8px;
+      border-radius: 5px 0 0 5px;
+      border: none;
+    }
+    #searchBtn {
+      padding: 8px 12px;
+      border: none;
+      background: #3a82f7;
+      color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+    #searchBtn:hover {
+      background: #2563eb;
+    }
+    .video-item {
+      cursor: pointer;
+      padding: 8px;
+      border-bottom: 1px solid #333;
+    }
+    .video-item:hover {
+      background: #333;
+    }
+    video {
+      width: 100%;
+      max-height: 65vh;
+      margin-top: 15px;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <h3>Danh sách Video</h3>
+    <div id="searchContainer">
+      <input type="text" id="searchBox" placeholder="Tìm kiếm...">
+      <button id="searchBtn">Tìm</button>
+    </div>
+    <div id="videoList"></div>
+  </div>
+
+  <div id="main">
+    <h2 id="videoTitle">Chưa chọn video</h2>
+    <video id="player" controls></video>
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:3000/api";
+    const videoListDiv = document.getElementById("videoList");
+    const player = document.getElementById("player");
+    const videoTitle = document.getElementById("videoTitle");
+    const searchBox = document.getElementById("searchBox");
+    const searchBtn = document.getElementById("searchBtn");
+
+    async function loadVideos(query = "") {
+  let videos = [];
+  if (query) {
+    // tìm kiếm theo query
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+    videos = await res.json();
+  } else {
+    // lấy tất cả video của mọi author
+    const resAuthors = await fetch(`${API_BASE}/authors`);
+    const authors = await resAuthors.json();
+
+    for (const author of authors) {
+      const res = await fetch(`${API_BASE}/videos?author=${author}`);
+      const vids = await res.json();
+      videos = videos.concat(vids);
+    }
+  }
+
+  // hiển thị kết quả
+  videoListDiv.innerHTML = "";
+  if (videos.length === 0) {
+    videoListDiv.innerHTML = "<p>Không tìm thấy video nào.</p>";
+    return;
+  }
+
+  videos.forEach(v => {
+    const div = document.createElement("div");
+    div.className = "video-item";
+    div.innerText = `${v.character} - ${v.title}`;
+    div.onclick = () => playVideo(v);
+    videoListDiv.appendChild(div);
+  });
+}
+
+
+    // Play video
+    function playVideo(video) {
+      player.src = `${API_BASE}/videos/${video.author}/${video.filename}`;
+      videoTitle.innerText = `${video.character} - ${video.title}`;
+      player.play();
+    }
+
+    // Trigger tìm kiếm khi bấm nút
+    searchBtn.addEventListener("click", () => {
+      const query = searchBox.value.trim();
+      loadVideos(query);
+    });
+
+    // Load mặc định tất cả video
+    loadVideos();
+  </script>
+</body>
+</html>
