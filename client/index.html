@@ -6,21 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Scroller</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="buttonDown.css">
+    <link rel="stylesheet" href="muteButton.css">
+    <link rel="stylesheet" href="playPauseButton.css">
+    <link rel="stylesheet" href="inforVideo.css">
+    <link rel="stylesheet" href="navBottom.css">
+    <link rel="stylesheet" href="videoPopup.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
     <div id="container">
         <div class="video-page">
-            <video src="video.mp4" loop autoplay controls playsinline muted preload="metadata"></video>
+            <video src="" loop autoplay controls playsinline muted preload="metadata"></video>
         </div>
         <div class="video-page">
-            <video src="video.mp4" loop autoplay controls playsinline muted preload="metadata"></video>
+            <video src="" loop autoplay controls playsinline muted preload="metadata"></video>
         </div>
         <div class="video-page">
-            <video src="video.mp4" loop autoplay controls playsinline muted preload="metadata"></video>
+            <video src="" loop autoplay controls playsinline muted preload="metadata"></video>
         </div>
     </div>
+
+    <button id="scrollDownBtn">
+        <i class="fa-solid fa-chevron-down"></i>
+    </button>
+
+    <button id="muteBtn">
+        <i class="fa-solid fa-volume-xmark"></i>
+    </button>
+
+    <button id="playPauseBtn">
+        <i class="fa-solid fa-pause"></i>
+    </button>
+
+    <div id="inforVideo">
+        <h2 id="titleVideo">Title Video</h2>
+        <p id="authorVideo" data-label="Author">Author Video</p>
+        <p id="characterVideo" data-label="Character">Description Video</p>
+        <p id="genreVideo" data-label="Genre">Genre Video</p>
+    </div>
+
+    <div id="navBottom">
+        <div class="navItem" id="character">Character</div>
+        <div class="navItem" id="genre">Genre</div>
+        <div class="navItem" id="author">Author</div>
+    </div>
+
+    <div id="dropdownContainer" class="hidden"></div>
+
+    <!-- Popup -->
+    <div id="videoPopup" class="hidden">
+        <div id="popupContent">
+            <span id="closePopup">&times;</span>
+            <div id="popupVideosContainer">
+                <!-- Các video item sẽ được thêm ở đây -->
+            </div>
+        </div>
+    </div>
+
+    <div id="searchContainer" class="collapsed">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm video, author, character..." />
+        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
     <script type="module" src="random_video.js"></script>
+    <script type="module" src="buttonDown.js"></script>
+    <script type="module" src="muteButton.js"></script>
+    <script type="module" src="inforVideo.js"></script>
+    <script type="module" src="navBottom.js"></script>
+    <script type="module" src="videoPopup.js"></script>
+    <script type="module" src="search.js"></script>
+    <script type="module" src="playPauseButton.js"></script>
 </body>
 
 </html>

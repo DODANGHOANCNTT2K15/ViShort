@@ -1,0 +1,44 @@
+#inforVideo {
+    position: fixed; /* luôn nổi trên video */
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45); /* nền mờ tối vừa phải */
+    padding: 10px 14px;
+    border-radius: 8px;
+    z-index: 1000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    -webkit-tap-highlight-color: transparent; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+ */
+    user-select: none;         /* chuẩn */
+    touch-action: manipulation; /* tối ưu cho touch */
+}
+
+#inforVideo h2,p{
+    background-color: transparent;
+}
+
+/* Tên video */
+#titleVideo {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+/* Các thông tin phụ */
+#inforVideo p {
+    font-size: 14px;
+    margin: 2px 0;
+    line-height: 1.3;
+}
+
+/* Phần nhãn nổi bật */
+#inforVideo p::before {
+    content: attr(data-label) ": "; /* dùng thuộc tính data-label */
+    font-weight: 500;
+    color: #ffd700; /* vàng nhấn mạnh */
+}

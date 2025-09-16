@@ -1,0 +1,30 @@
+#scrollDownBtn {
+    position: fixed;
+    bottom: 50%;
+    left: 10vw;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.034);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 1000;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+#scrollDownBtn i{
+    background-color: transparent;
+    color: #ffffffc2;
+}
+
+/* Chỉ hover trên desktop */
+@media (hover: hover) and (pointer: fine) {
+    #scrollDownBtn:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}

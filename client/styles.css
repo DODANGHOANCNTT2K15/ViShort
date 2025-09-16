@@ -3,6 +3,12 @@
     padding: 0;
     box-sizing: border-box;
     background-color: black;
+    -webkit-tap-highlight-color: transparent; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+ */
+    user-select: none;         /* chuẩn */
+    touch-action: manipulation; /* tối ưu cho touch */
 }
 
 body,
@@ -40,4 +46,29 @@ html {
 video {
     width: 100%;
     transform: translateY(-3%);
+    filter: blur(50px); 
+    transition: filter 0.3s ease; /* hiệu ứng mượt */
+    -webkit-tap-highlight-color: transparent; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+ */
+    user-select: none;         /* chuẩn */
+    touch-action: manipulation; /* tối ưu cho touch */
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+    .video-page {
+        display: flex;
+        justify-content: center; /* canh ngang giữa */
+        align-items: center;     /* canh dọc giữa */
+    }
+
+    video {
+        width: auto;      
+        height: 100vh;    
+        max-width: 100%;  
+        max-height: 100vh;
+        transform: none;  /* bỏ dịch chuyển */
+    }
 }

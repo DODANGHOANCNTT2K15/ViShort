@@ -1,0 +1,43 @@
+#searchContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 1500; /* đảm bảo nổi trên navBottom */
+    background-color: transparent;
+}
+
+#searchInput {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+#searchBtn {
+    padding: 8px 10px;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+#searchBtn i{
+    background-color: transparent;
+}
+
+#searchBtn:hover {
+    opacity: 1;
+    background: #444;
+}
+
+#searchContainer.collapsed #searchInput {
+    display: none; /* khi collapsed, input ẩn */
+}
+

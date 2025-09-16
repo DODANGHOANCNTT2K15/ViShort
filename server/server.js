@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 const PORT = 3000;
 
-const ROOT_DIR = "C:\\Users\\DO DANG HOAN\\Videos\\Captures\\all";
-// const ROOT_DIR = "D:\\game_design\\hidden_movie\\_best_artist";
+// const ROOT_DIR = "C:\\Users\\DO DANG HOAN\\Videos\\Captures\\all";
+const ROOT_DIR = "D:\\game_design\\hidden_movie\\_best_artist";
 
 // list authors api
 app.get("/api/authors", (req, res) => {
@@ -94,6 +94,34 @@ app.get("/api/videos/:author/:filename", (req, res) => {
     }
 });
 
+// Lấy tất cả video của một author
+app.get("/api/authors/:author", (req, res) => {
+    const { author } = req.params;
+    const authorDir = path.join(ROOT_DIR, author);
+
+    if (!fs.existsSync(authorDir)) {
+        return res.status(404).json({ error: "Author not found" });
+    }
+
+    const videos = fs.readdirSync(authorDir)
+        .filter(file => file.endsWith(".mp4"))
+        .map(file => {
+            const parts = file.replace(".mp4", "").split("_");
+            const [authorName, genre, character, ...titleParts] = parts;
+            return {
+                filename: file,
+                author: authorName,
+                genre,
+                character,
+                title: titleParts.join("_"),
+                url: `/api/videos/${author}/${file}`
+            };
+        });
+
+    res.json(videos);
+});
+
+
 // metadata api for a video
 app.get("/api/videos/:author/:filename/meta", (req, res) => {
     const { author, filename } = req.params;
@@ -137,6 +165,49 @@ app.get("/api/characters/:character", (req, res) => {
 
     res.json(results);
 });
+
+// Lấy tất cả character duy nhất
+app.get("/api/characters", (req, res) => {
+    const authors = fs.readdirSync(ROOT_DIR)
+        .filter(f => fs.statSync(path.join(ROOT_DIR, f)).isDirectory());
+
+    const characterSet = new Set();
+
+    authors.forEach(author => {
+        const files = fs.readdirSync(path.join(ROOT_DIR, author))
+            .filter(f => f.endsWith(".mp4"));
+
+        files.forEach(file => {
+            const parts = file.replace(".mp4", "").split("_");
+            const [authorName, genre, characterName, ...titleParts] = parts;
+            if (characterName) characterSet.add(characterName);
+        });
+    });
+
+    res.json(Array.from(characterSet).sort());
+});
+
+// Lấy tất cả genre duy nhất
+app.get("/api/genres", (req, res) => {
+    const authors = fs.readdirSync(ROOT_DIR)
+        .filter(f => fs.statSync(path.join(ROOT_DIR, f)).isDirectory());
+
+    const genreSet = new Set();
+
+    authors.forEach(author => {
+        const files = fs.readdirSync(path.join(ROOT_DIR, author))
+            .filter(f => f.endsWith(".mp4"));
+
+        files.forEach(file => {
+            const parts = file.replace(".mp4", "").split("_");
+            const [authorName, genreName, characterName, ...titleParts] = parts;
+            if (genreName) genreSet.add(genreName);
+        });
+    });
+
+    res.json(Array.from(genreSet).sort());
+});
+
 
 // filter with genre
 app.get("/api/genres/:genre", (req, res) => {
