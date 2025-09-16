@@ -27,8 +27,8 @@ function shuffleArray(array) {
 }
 
 let shuffledVideos = shuffleArray(allVideos);
-
 let currentIndex = 0;
+
 async function loadFirstVideos() {
     const videoEls = container.querySelectorAll("video");
     for (let i = 0; i < 3 && i < videoEls.length && i < shuffledVideos.length; i++) {
@@ -41,6 +41,41 @@ async function loadFirstVideos() {
 };
 
 loadFirstVideos();
+
+export function setShuffledVideos(newList) {
+    shuffledVideos = shuffleArray(newList);
+    currentIndex = 0;
+
+    container.innerHTML = "";
+    videos = [];
+
+    // load lại 3 video đầu tiên
+    for (let i = 0; i < 3 && i < shuffledVideos.length; i++) {
+        const newDiv = document.createElement("div");
+        newDiv.className = "video-page";
+        const newVideo = document.createElement("video");
+        newVideo.muted = true;
+        newVideo.loop = true;
+        newVideo.autoplay = true;
+        newVideo.controls = true;
+        newVideo.playsInline = true;
+        newVideo.preload = "auto";
+
+        newDiv.appendChild(newVideo);
+        container.appendChild(newDiv);
+        videos.push(newVideo);
+
+        const url = shuffledVideos[i];
+        newVideo.src = API_BASE + url;
+        newVideo.load();
+        setVideoDataAttributes(newVideo, url);
+
+        currentIndex = i + 1;
+    }
+
+    handlePlay(); 
+}
+
 
 // Scroll logic: play video visible nhất, pause các video khác
 function handlePlay() {
@@ -107,6 +142,10 @@ async function loadVideoNoRepeat(videoEl) {
     setVideoDataAttributes(videoEl, url);
 }
 
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
 // Scroll event với debounce
 container.addEventListener("scroll", () => {
     clearTimeout(container._scrollTimeout);
@@ -115,6 +154,9 @@ container.addEventListener("scroll", () => {
 
         const videoEls = container.querySelectorAll("video");
         const lastVideo = videoEls[videoEls.length - 1];
+
+        // iOS Safari thường tính toán khác -> có thể dùng margin khác
+        const threshold = isIOS() ? container.clientHeight * 2 : container.clientHeight * 1.5;
 
         // Khi video cuối cùng sắp hiện ra => thêm video mới
         const rect = lastVideo.getBoundingClientRect();

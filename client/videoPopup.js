@@ -4,7 +4,7 @@ const popupVideosContainer = document.getElementById("popupVideosContainer");
 
 let allVideos = [];
 let currentPage = 1;
-const videosPerPage = 5; // số video mỗi trang
+const videosPerPage = 8; // số video mỗi trang
 
 // Tạo 1 video item
 function createVideoItem(v) {
@@ -15,9 +15,9 @@ function createVideoItem(v) {
     info.className = "videoInfo";
     info.innerHTML = `
         <strong>${v.title}</strong><br>
-        Author: ${v.author}<br>
-        Character: ${v.character}<br>
-        Genre: ${v.genre}
+        <span>Author: </span>${v.author}<br>
+        <span>Character: </span>${v.character}<br>
+        <span>Genre: </span>${v.genre}
     `;
 
     const videoEl = document.createElement("video");
@@ -147,5 +147,7 @@ closePopup.addEventListener("click", () => {
     popupVideosContainer.querySelectorAll("video").forEach(v => {
         v.pause();
         v.currentTime = 0;
+        v.src = ""; // Giải phóng bộ nhớ
     });
 });
+

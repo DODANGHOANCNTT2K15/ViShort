@@ -1,4 +1,5 @@
 import { showVideoPopup } from "./videoPopup.js";
+import { setCurrentApi } from "./streamButtom.js";
 
 const searchContainer = document.getElementById("searchContainer");
 const searchBtn = document.getElementById("searchBtn");
@@ -11,6 +12,7 @@ async function performSearch() {
 
     try {
         const res = await fetch(`http://192.168.102.18:3000/api/search?q=${encodeURIComponent(keyword)}`);
+        
         if (!res.ok) throw new Error("Không lấy được dữ liệu tìm kiếm");
         const videos = await res.json();
 
@@ -18,8 +20,10 @@ async function performSearch() {
             alert("Không tìm thấy video nào!");
             return;
         }
-
         showVideoPopup(videos);
+
+        setCurrentApi(`http://192.168.102.18:3000/api/search?q=${encodeURIComponent(keyword)}`)
+
     } catch (err) {
         console.error(err);
     }

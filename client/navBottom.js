@@ -1,8 +1,11 @@
 import { showVideoPopup } from "./videoPopup.js";
+import { setCurrentApi } from "./streamButtom.js"; 
+import { setShuffledVideos } from "./random_video.js";
 
 const characterDiv = document.getElementById("character");
 const genreDiv = document.getElementById("genre");
 const authorDiv = document.getElementById("author");
+const randomDiv = document.getElementById("random");
 const dropdownContainer = document.getElementById("dropdownContainer");
 
 async function fetchList(url) {
@@ -35,6 +38,7 @@ function showDropdown(items, type) {
                 if (!res.ok) throw new Error("Không lấy được video");
                 const videos = await res.json();
                 showVideoPopup(videos); // mở popup
+                setCurrentApi(apiUrl);
             } catch (err) {
                 console.error(err);
             }
@@ -60,6 +64,18 @@ genreDiv.addEventListener("click", async () => {
 authorDiv.addEventListener("click", async () => {
     const list = await fetchList("http://192.168.102.18:3000/api/authors");
     showDropdown(list, "Author");
+});
+
+randomDiv.addEventListener("click", async () => {
+    const apiUrl = "http://192.168.102.18:3000/api/videos/all";
+    try {
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Không lấy được video random");
+        const videos = await res.json();
+        setShuffledVideos(videos);      
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 // Click ra ngoài dropdown => ẩn

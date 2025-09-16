@@ -263,6 +263,7 @@ app.get("/api/search", (req, res) => {
 
             // chỉ check genre, character, title
             if (
+                (authorName && authorName.toLowerCase().includes(keyword)) ||
                 (genre && genre.toLowerCase().includes(keyword)) ||
                 (characterName && characterName.toLowerCase().includes(keyword)) ||
                 (title && title.toLowerCase().includes(keyword))
@@ -314,19 +315,6 @@ app.get("/api/random-video", (req, res) => {
     // Chọn ngẫu nhiên 1 video
     const randomVideo = allVideos[Math.floor(Math.random() * allVideos.length)];
     res.json(randomVideo);
-});
-
-// count videos
-app.get("/api/videos/count", (req, res) => {
-    let allVideos = [];
-    const authors = fs.readdirSync(ROOT_DIR).filter(f => fs.statSync(path.join(ROOT_DIR, f)).isDirectory());
-
-    authors.forEach(author => {
-        const files = fs.readdirSync(path.join(ROOT_DIR, author)).filter(f => f.endsWith(".mp4"));
-        files.forEach(file => allVideos.push(`/api/videos/${author}/${file}`));
-    });
-
-    res.json({ total: allVideos.length, videos: allVideos });
 });
 
 // lấy tất cả URL video

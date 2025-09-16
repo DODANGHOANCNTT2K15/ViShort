@@ -22,6 +22,7 @@ html {
     width: 100%;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
 
      /* Ẩn thanh scroll */
     scrollbar-width: none; /* Firefox */

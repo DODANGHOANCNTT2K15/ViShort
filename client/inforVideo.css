@@ -3,10 +3,14 @@
     top: 10px;
     left: 10px;
     color: #fff;
+    max-width: 90%;
     background: rgba(0, 0, 0, 0.45); /* nền mờ tối vừa phải */
     padding: 10px 14px;
     border-radius: 8px;
     z-index: 1000;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     -webkit-tap-highlight-color: transparent; /* iOS Safari */
