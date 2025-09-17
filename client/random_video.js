@@ -155,13 +155,10 @@ container.addEventListener("scroll", () => {
         const videoEls = container.querySelectorAll("video");
         const lastVideo = videoEls[videoEls.length - 1];
 
-        // iOS Safari thường tính toán khác -> có thể dùng margin khác
         const threshold = isIOS() ? container.clientHeight * 2 : container.clientHeight * 1.5;
 
-        // Khi video cuối cùng sắp hiện ra => thêm video mới
         const rect = lastVideo.getBoundingClientRect();
         if (rect.top < container.clientHeight * 1.5) {
-            // thêm video mới vào cuối
             const newDiv = document.createElement("div");
             newDiv.className = "video-page";
             const newVideo = document.createElement("video");
@@ -179,11 +176,10 @@ container.addEventListener("scroll", () => {
 
             await loadVideoNoRepeat(newVideo);
 
-            // nếu đã có > 3 video thì xóa video đầu tiên
             if (videos.length > 4) {
                 const firstDiv = videos[0].parentElement;
                 firstDiv.remove();
-                videos.shift(); // bỏ khỏi mảng
+                videos.shift(); 
             }
         }
     }, 200);
@@ -200,6 +196,40 @@ function setVideoDataAttributes(videoEl, url) {
     videoEl.setAttribute("data-character", character || "Description Video");
     videoEl.setAttribute("data-title", rest.join("_") || "Title Video");
 }
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+        const container = document.getElementById("container");
+        if (!container) return;
+
+        // Lấy video visible nhất hoặc div cuối cùng
+        const videos = Array.from(container.querySelectorAll("video"));
+        if (videos.length === 0) return;
+
+        // Lấy video hiện đang nhìn thấy nhiều nhất
+        const mostVisible = videos.reduce((max, v) => {
+            const rect = v.getBoundingClientRect();
+            const visible = Math.max(0, Math.min(window.innerHeight, rect.bottom) - Math.max(0, rect.top));
+            return visible > max.visible ? { video: v, visible } : max;
+        }, { video: null, visible: -1 }).video;
+
+        // Xác định div/video tiếp theo
+        let nextVideo;
+        if (mostVisible) {
+            const currentIndex = videos.indexOf(mostVisible);
+            nextVideo = videos[currentIndex + 1];
+        }
+
+        if (nextVideo) {
+            // Scroll tới video tiếp theo
+            nextVideo.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            // Nếu không có video tiếp theo, scroll thêm một khoảng
+            container.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+        }
+    }
+});
+
 
 // Trigger lần đầu
 handlePlay();

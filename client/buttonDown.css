@@ -1,5 +1,5 @@
 #scrollDownBtn {
-    position: fixed;
+    position: none;
     bottom: 50%;
     left: 10vw;
     transform: translateX(-50%);
@@ -24,6 +24,10 @@
 
 /* Chỉ hover trên desktop */
 @media (hover: hover) and (pointer: fine) {
+    #scrollDownBtn{
+        position: fixed;
+    }
+
     #scrollDownBtn:hover {
         background: rgba(255, 255, 255, 0.5);
     }
